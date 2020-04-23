@@ -1,5 +1,12 @@
 package com.epam.izh.rd.online.repository;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+
 public class SimpleFileRepository implements FileRepository {
 
     /**
@@ -9,8 +16,33 @@ public class SimpleFileRepository implements FileRepository {
      * @return файлов, в том числе скрытых
      */
     @Override
-    public long countFilesInDirectory(String path) {
-        return 0;
+    public long countFilesInDirectory(String path) { // не выдает желаемый результат. прототип см на гитхабе git@github.com:zuFrost/epam-learn025-File-NIO.git
+        class FileCounter {
+            private long fileCount;
+
+            public long scanCount(String folderPath) {
+                File folder = new File(folderPath);
+                if (!folder.exists()) {
+                    return 0;
+                }
+                File[] files = folder.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    if (!files[i].isDirectory()) {
+                        fileCount++;
+                    } else if (files[i].isDirectory()) {
+                        this.scanCount(files[i].getPath());
+                    }
+                }
+                return fileCount;
+            }
+        }
+
+
+        if (path != null ) {
+            return new FileCounter().scanCount(path);
+        } else {
+            return 0;
+        }
     }
 
     /**
