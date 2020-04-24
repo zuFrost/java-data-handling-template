@@ -13,7 +13,7 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String removeString(String base, String remove) {
-        return base.replaceAll(remove, ""); //TODO
+        return base.replaceAll(remove, "");
     }
 
     /**
@@ -39,7 +39,7 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String concatenate(String... elements) {
-        return null; //TODO
+        return null;
     }
 
     /**
@@ -69,7 +69,7 @@ public class SimpleTextService implements TextService {
         }
 
         //преобразовать массив символов в строку и вернуть в результат
-        return new String(chars); //TODO
+        return new String(chars);
     }
 
     /**
