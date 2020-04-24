@@ -24,7 +24,11 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isQuestionString(String text) {
-        return false; //TODO
+        if (text.length() != 0 && (text.charAt(text.length() - 1)) == '?') {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
