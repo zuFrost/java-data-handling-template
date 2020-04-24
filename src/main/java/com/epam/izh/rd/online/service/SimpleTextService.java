@@ -89,6 +89,16 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isPalindrome(String string) {
-        return false; //TODO
+        //инвертирую текст в тестовую строку
+        StringBuffer buffer = new StringBuffer(string);
+        String tempString = buffer.reverse().toString();
+        // удаляю пробелы и преобразую в нижний регистр и строку и тестовую строку.
+        string = string.replaceAll(" ", "").toLowerCase();
+        tempString = tempString.replaceAll(" ", "").toLowerCase();
+        if (string != "" && string.equals(tempString)) { // добавлена проверка на "" пустую стоку
+            return true;
+        } else {
+            return false;
+        }
     }
 }
