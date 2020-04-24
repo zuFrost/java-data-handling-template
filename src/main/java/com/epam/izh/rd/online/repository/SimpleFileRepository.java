@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import static java.nio.file.Files.readAllBytes;
+
 public class SimpleFileRepository implements FileRepository {
 
     /**
@@ -87,6 +89,11 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public String readFileFromResources(String fileName) {
+        try {
+            return new  String (readAllBytes(Paths.get("src/main/resources/" + fileName)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }
