@@ -47,7 +47,25 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String toJumpCase(String text) {
-        return null; //TODO
+        //строку в массив символов
+        char[] chars = text.toCharArray();
+
+        //массив символов подвергнуть изменению, согласно условия
+        for (int i = 0; i < chars.length; i++) {
+            //проверка на четность. четные в нижнем регистре, нечетные в верхнем
+            if (i % 2 == 0) {       //четные в нижний регистр
+                String tempSt = String.valueOf(chars[i]);
+                tempSt = tempSt.toLowerCase();
+                chars[i] = tempSt.toCharArray()[0];
+            } else {                //нечетные в верхнем регистре
+                String tempSt = String.valueOf(chars[i]);
+                tempSt = tempSt.toUpperCase();
+                chars[i] = tempSt.toCharArray()[0];
+            }
+        }
+
+        //преобразовать массив символов в строку и вернуть в результат
+        return new  String(chars); //TODO
     }
 
     /**
