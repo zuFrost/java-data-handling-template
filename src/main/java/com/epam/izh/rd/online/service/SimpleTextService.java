@@ -39,7 +39,15 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String concatenate(String... elements) {
-        return null;
+        String resultString = "";
+        if (elements.length > 0) {
+            for (String element : elements) {
+                resultString = resultString.concat(element);
+            }
+            return resultString;
+        } else {
+            return null;
+        }
     }
 
     /**
