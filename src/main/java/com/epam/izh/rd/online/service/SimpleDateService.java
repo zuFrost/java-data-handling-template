@@ -2,6 +2,7 @@ package com.epam.izh.rd.online.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 public class SimpleDateService implements DateService {
@@ -60,7 +61,9 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public long getSecondsInYear(int year) {
-        return 0;
+        LocalDateTime startTime = LocalDateTime.of(year, 1, 1, 0, 0, 0);
+        LocalDateTime finishTime = startTime.plusYears(1);
+        return finishTime.toEpochSecond(ZoneOffset.of("Z")) - startTime.toEpochSecond(ZoneOffset.of("Z"));
     }
 
 
