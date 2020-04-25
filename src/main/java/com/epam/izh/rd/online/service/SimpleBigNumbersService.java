@@ -15,7 +15,7 @@ public class SimpleBigNumbersService implements BigNumbersService {
      */
     @Override
     public BigDecimal getPrecisionNumber(int a, int b, int range) {
-        return null;
+        return BigDecimal.valueOf(a).divide(BigDecimal.valueOf(b), range, BigDecimal.ROUND_HALF_UP);
     }
 
     /**
