@@ -2,6 +2,7 @@ package com.epam.izh.rd.online.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
@@ -51,7 +52,13 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public long getNextLeapYear() {
-        return 0;
+        Year year = Year.now();
+        do {
+            if (year.isLeap()) {
+                return Long.valueOf(year.toString());
+            }
+            year = year.plusYears(1);
+        } while (true);
     }
 
     /**
