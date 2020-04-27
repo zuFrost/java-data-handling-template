@@ -1,7 +1,9 @@
 package com.epam.izh.rd.online.repository;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Paths;
 
 import static java.nio.file.Files.readAllBytes;
@@ -107,6 +109,17 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public boolean createFile(String path, String name) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        // get URL for resource folder. ClassLoader help
+        URL resource = classLoader.getResource(path);
+        //folder in resource folder
+        File file = new File(resource.getPath());
+        try {
+            FileWriter fileWriter = new FileWriter(file.getPath() + "/" + name); //folder + file name
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
