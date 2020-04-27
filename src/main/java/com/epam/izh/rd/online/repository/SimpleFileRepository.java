@@ -1,5 +1,13 @@
 package com.epam.izh.rd.online.repository;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Paths;
+
+import static java.nio.file.Files.readAllBytes;
+
 public class SimpleFileRepository implements FileRepository {
 
     /**
@@ -10,7 +18,38 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public long countFilesInDirectory(String path) {
-        return 0;
+        class FileCounter {
+            private long fileCount = 0;
+            public long scanCount(File file) {
+//                System.out.println("файл " + file + " существует " + file.exists());
+                if (!file.exists()) {
+//                    System.out.println("файл " + file + " not exist");
+                    return 0;
+                }
+
+                File[] files = file.listFiles();
+                for (int i = 0; i < files.length; i++) {
+//                    System.out.println(files[i]);
+                    if (files[i].isDirectory()) {
+//                        System.out.println(files[i].getPath());
+//                        this.scanCount(files[i].getPath());
+                        this.scanCount(new File(files[i].getPath()));
+                    } else {
+                        fileCount++;
+                    }
+                }
+                return fileCount;
+            }
+        }
+
+        ClassLoader classLoader = SimpleFileRepository.class.getClassLoader();
+        File file = new File(classLoader.getResource(path).getPath());
+
+        if (path != null ) {
+            return new FileCounter().scanCount(file);
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -21,7 +60,33 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public long countDirsInDirectory(String path) {
-        return 0;
+
+        class DirCounter {
+            private long dirCount = 1;
+            public long scanCount(File file) {
+                if (!file.exists()) {
+                    return 0;
+                }
+                File[] dirs = file.listFiles();
+                for (int i = 0; i < dirs.length; i++) {
+                    if (dirs[i].isDirectory()) {
+                        dirCount++;
+                        this.scanCount(new File(dirs[i].getPath()));
+                    }
+                }
+                return dirCount;
+            }
+        }
+
+        ClassLoader classLoader = SimpleFileRepository.class.getClassLoader();
+        File file = new File(classLoader.getResource(path).getPath());
+
+        if (path != null ) {
+            return new DirCounter().scanCount(file);
+        } else {
+            return 0;
+        }
+
     }
 
     /**
@@ -34,6 +99,8 @@ public class SimpleFileRepository implements FileRepository {
     public void copyTXTFiles(String from, String to) {
         return;
     }
+    //надо ли мне реализовывать те методы, которые не требуются в задании?
+    //надо спросить у teamlider
 
     /**
      * Метод создает файл на диске с расширением txt
@@ -44,6 +111,17 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public boolean createFile(String path, String name) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        // get URL for resource folder. ClassLoader help
+        URL resource = classLoader.getResource(path);
+        //folder in resource folder
+        File file = new File(resource.getPath());
+        try {
+            FileWriter fileWriter = new FileWriter(file.getPath() + "/" + name); //folder + file name
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
@@ -55,6 +133,11 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public String readFileFromResources(String fileName) {
+        try {
+            return new  String (readAllBytes(Paths.get("src/main/resources/" + fileName)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

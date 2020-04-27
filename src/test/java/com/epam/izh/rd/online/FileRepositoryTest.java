@@ -49,7 +49,7 @@ public class FileRepositoryTest {
     @Test
     @DisplayName("Тест метода FileRepository.createFile(String path)")
     void testCreateFile() {
-        fileRepository.createFile(TEST_DIR_CREATE_PATH, TEST_FILE_TO_CREATE);
+        boolean file = fileRepository.createFile(TEST_DIR_CREATE_PATH, TEST_FILE_TO_CREATE);
 
         assertTrue(getFile(TEST_DIR_CREATE_PATH + "/" + TEST_FILE_TO_CREATE).exists());
     }
