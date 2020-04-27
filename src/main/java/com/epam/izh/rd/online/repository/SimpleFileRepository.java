@@ -2,10 +2,7 @@ package com.epam.izh.rd.online.repository;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static java.nio.file.Files.readAllBytes;
 
@@ -18,30 +15,36 @@ public class SimpleFileRepository implements FileRepository {
      * @return файлов, в том числе скрытых
      */
     @Override
-    public long countFilesInDirectory(String path) { // не выдает желаемый результат. прототип см на гитхабе git@github.com:zuFrost/epam-learn025-File-NIO.git
+    public long countFilesInDirectory(String path) {
         class FileCounter {
-            private long fileCount;
-
-            public long scanCount(String folderPath) {
-                File folder = new File(folderPath);
-                if (!folder.exists()) {
+            private long fileCount = 0;
+            public long scanCount(File file) {
+//                System.out.println("файл " + file + " существует " + file.exists());
+                if (!file.exists()) {
+//                    System.out.println("файл " + file + " not exist");
                     return 0;
                 }
-                File[] files = folder.listFiles();
+
+                File[] files = file.listFiles();
                 for (int i = 0; i < files.length; i++) {
-                    if (!files[i].isDirectory()) {
+//                    System.out.println(files[i]);
+                    if (files[i].isDirectory()) {
+//                        System.out.println(files[i].getPath());
+//                        this.scanCount(files[i].getPath());
+                        this.scanCount(new File(files[i].getPath()));
+                    } else {
                         fileCount++;
-                    } else if (files[i].isDirectory()) {
-                        this.scanCount(files[i].getPath());
                     }
                 }
                 return fileCount;
             }
         }
 
+        ClassLoader classLoader = SimpleFileRepository.class.getClassLoader();
+        File file = new File(classLoader.getResource(path).getPath());
 
         if (path != null ) {
-            return new FileCounter().scanCount(path);
+            return new FileCounter().scanCount(file);
         } else {
             return 0;
         }
@@ -55,7 +58,33 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public long countDirsInDirectory(String path) {
-        return 0;
+
+        class DirCounter {
+            private long dirCount = 1;
+            public long scanCount(File file) {
+                if (!file.exists()) {
+                    return 0;
+                }
+                File[] dirs = file.listFiles();
+                for (int i = 0; i < dirs.length; i++) {
+                    if (dirs[i].isDirectory()) {
+                        dirCount++;
+                        this.scanCount(new File(dirs[i].getPath()));
+                    }
+                }
+                return dirCount;
+            }
+        }
+
+        ClassLoader classLoader = SimpleFileRepository.class.getClassLoader();
+        File file = new File(classLoader.getResource(path).getPath());
+
+        if (path != null ) {
+            return new DirCounter().scanCount(file);
+        } else {
+            return 0;
+        }
+
     }
 
     /**

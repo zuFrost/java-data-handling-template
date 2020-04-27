@@ -16,7 +16,7 @@ public class SimpleRegExpService implements RegExpService {
     @Override
     public String maskSensitiveData() {
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("C:\\Java\\Java Course\\Java. Fundamentals\\java-data-handling-template\\src\\main\\resources\\sensitive_data.txt"))));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("C:\\Java\\Java_Course\\Java_Fundamentals\\java-data-handling-template\\src\\main\\resources\\sensitive_data.txt"))));
             String line = reader.readLine();
             Pattern pattern  = Pattern.compile("(?<=\\d{4}\\s)((\\d{4}\\s\\d{4}))(?=\\s\\d{4})");
             Matcher matcher = pattern.matcher(line);
@@ -40,7 +40,7 @@ public class SimpleRegExpService implements RegExpService {
     public String replacePlaceholders(double paymentAmount, double balance) {
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("C:\\Java\\Java Course\\Java. Fundamentals\\java-data-handling-template\\src\\main\\resources\\sensitive_data.txt"))));
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("C:\\Java\\Java_Course\\Java_Fundamentals\\java-data-handling-template\\src\\main\\resources\\sensitive_data.txt"))));
             String line = reader.readLine();
             System.out.println(line);
             Pattern pattern  = Pattern.compile("(\\$\\{payment_amount\\})");
