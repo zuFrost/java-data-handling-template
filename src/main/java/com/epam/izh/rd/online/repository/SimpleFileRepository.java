@@ -99,6 +99,8 @@ public class SimpleFileRepository implements FileRepository {
     public void copyTXTFiles(String from, String to) {
         return;
     }
+    //надо ли мне реализовывать те методы, которые не требуются в задании?
+    //надо спросить у teamlider
 
     /**
      * Метод создает файл на диске с расширением txt
